@@ -1,6 +1,6 @@
 {
   "name": "@hysmart/server",
-  "version": "5.7.8",
+  "version": "5.12.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "verify:release": "node test/v5_7_release_gate.test.js",
-    "smoke:staging": "node scripts/staging-smoke.mjs"
+    "smoke:staging": "node scripts/staging-smoke.mjs",
+    "intelligence:train-scheduled": "node scripts/train-scheduled-intelligence.mjs",
+    "intelligence:train-cost-scheduled": "node scripts/train-scheduled-cost-forecast.mjs",
+    "intelligence:train-cashflow-scheduled": "node scripts/train-scheduled-cashflow-forecast.mjs",
+    "intelligence:train-all": "npm run intelligence:train-scheduled && npm run intelligence:train-cost-scheduled && npm run intelligence:train-cashflow-scheduled"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",
