@@ -199,7 +199,7 @@ export function createApp({ service = new AppService({ supabase: supabaseAdmin }
   app.use(requestId);
   app.use(auditRequest({ supabase }));
 
-  app.get("/", (_req, res) => res.json({ success: true, data: { name: "HySmart Build API", version: "5.12.0", status: "ok" } }));
+  app.get("/", (_req, res) => res.json({ success: true, data: { name: "HySmart Build API", version: "5.13.2", status: "ok" } }));
   app.use(`${env.apiPrefix}/health`, createHealthRouter({ service }));
   app.use(`${env.apiPrefix}/auth`, createAuthRouter({ supabase, rateLimiter }));
   app.use(`${env.apiPrefix}/me`, createMeRouter({ authService, companyService, authMiddleware }));

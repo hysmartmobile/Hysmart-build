@@ -66,9 +66,9 @@ export class ProcurementAccountingService {
   async ensureAccounts(companyId){
     const {error}=await this.supabase.rpc('seed_default_chart_of_accounts',{p_company_id:companyId}); if(error) throw error;
   }
-  async list(table,{companyId,page=1,pageSize=50,status,search,order='created_at',ascending=false}={}){
+  async list(table,{companyId,page=1,pageSize=50,status,search,order='created_at',ascending=false,projectId}={}){
     const from=(page-1)*pageSize,to=from+pageSize-1; let q=this.supabase.from(table).select('*',{count:'exact'}).eq('company_id',companyId).order(order,{ascending}).range(from,to);
-    if(status)q=q.eq('status',status); if(search){const cols={purchase_requisitions:'requisition_no,justification',purchase_quotations:'quotation_no,notes',purchase_orders:'po_no,notes',goods_received_notes:'grn_no,notes',supplier_invoices:'invoice_no,notes',supplier_payments:'payment_no,reference',accounts_receivable_invoices:'invoice_no,customer_name,customer_email',payroll_runs:'run_no,notes',accounting_journals:'journal_no,reference,description'}[table]; if(cols) q=q.or(cols.split(',').map(c=>`${c}.ilike.%${search}%`).join(','));}
+    if(status)q=q.eq('status',status); if(projectId&&table==='purchase_orders')q=q.eq('project_id',projectId); if(search){const cols={purchase_requisitions:'requisition_no,justification',purchase_quotations:'quotation_no,notes',purchase_orders:'po_no,notes',goods_received_notes:'grn_no,notes',supplier_invoices:'invoice_no,notes',supplier_payments:'payment_no,reference',accounts_receivable_invoices:'invoice_no,customer_name,customer_email',payroll_runs:'run_no,notes',accounting_journals:'journal_no,reference,description'}[table]; if(cols) q=q.or(cols.split(',').map(c=>`${c}.ilike.%${search}%`).join(','));}
     const {data,count,error}=await q;if(error)throw error;return {items:data??[],page,pageSize,total:count??0,totalPages:Math.ceil((count??0)/pageSize)};
   }
   async assertProject(companyId,id){if(!id)return;const {data,error}=await this.supabase.from('projects').select('id,company_id').eq('company_id',companyId).eq('id',id).maybeSingle();if(error)throw error;if(!data)fail('Project not found','PROJECT_NOT_FOUND',404);}

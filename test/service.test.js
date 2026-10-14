@@ -8,7 +8,7 @@ test("AppService returns API health metadata", () => {
 
   assert.equal(health.status, "ok");
   assert.equal(health.service, "hysmart-build-api");
-  assert.equal(health.version, "5.12.0");
+  assert.equal(health.version, "5.13.2");
   assert.match(health.timestamp, /^\d{4}-\d{2}-\d{2}T/);
 });
 

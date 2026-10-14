@@ -34,6 +34,12 @@ const schema = z.object({
     if (value.CORS_ORIGIN.split(',').some((origin) => { try { return new URL(origin.trim()).protocol !== 'https:'; } catch { return true; } })) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['CORS_ORIGIN'], message: 'Production CORS_ORIGIN entries must be valid HTTPS origins' });
     if (!isHttpsUrl(value.WEB_APP_URL)) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['WEB_APP_URL'], message: 'Production WEB_APP_URL must use HTTPS' });
     if (!isHttpsUrl(value.BILLING_CALLBACK_URL)) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['BILLING_CALLBACK_URL'], message: 'Production BILLING_CALLBACK_URL must use HTTPS' });
+    if (!value.PAYSTACK_SECRET_KEY) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['PAYSTACK_SECRET_KEY'], message: 'Production requires the Paystack live secret key' });
+    else if (!value.PAYSTACK_SECRET_KEY.startsWith('sk_live_')) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['PAYSTACK_SECRET_KEY'], message: 'Production requires a Paystack live key (sk_live_); test keys are not allowed' });
+    if (!value.STRIPE_SECRET_KEY) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['STRIPE_SECRET_KEY'], message: 'Production requires the Stripe live secret key' });
+    else if (!value.STRIPE_SECRET_KEY.startsWith('sk_live_')) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['STRIPE_SECRET_KEY'], message: 'Production requires a Stripe live key (sk_live_); test keys are not allowed' });
+    if (!value.STRIPE_WEBHOOK_SECRET) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['STRIPE_WEBHOOK_SECRET'], message: 'Production requires the Stripe webhook signing secret' });
+    if (value.TRUST_PROXY !== true) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['TRUST_PROXY'], message: 'Production must set TRUST_PROXY=true behind the Render proxy' });
   }
 });
 

@@ -11,7 +11,7 @@ const read = file => fs.readFileSync(file, 'utf8');
 test('v5.7.1 web shell cache is versioned past v5.6.1', () => {
   const sw = read(path.join(web, 'public', 'sw.js'));
   assert.match(sw, /const CACHE_PREFIX = 'hysmart-pwa-shell-'/);
-  assert.match(sw, /const CACHE_NAME = `\$\{CACHE_PREFIX\}5\.12\.0-forecast-monitoring`/);
+  assert.match(sw, /const CACHE_NAME = `\$\{CACHE_PREFIX\}5\.13\.2-guided-onboarding`/);
   assert.doesNotMatch(sw, /hysmart-pwa-shell-5\.6\.1/);
 });
 

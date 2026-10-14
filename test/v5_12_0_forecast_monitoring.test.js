@@ -24,6 +24,6 @@ test('v5.12 frontend exposes forecast performance and calibration bands',()=>{
 test('v5.12 runtime and PWA versions agree',()=>{
  const backend=JSON.parse(read('package.json'));
  const web=JSON.parse(read('../HySmart-Build-Web/package.json'));
- assert.equal(backend.version,'5.12.0');assert.equal(web.version,'5.12.0');
- assert.match(read('../HySmart-Build-Web/public/sw.js'),/5\.12\.0-forecast-monitoring/);
+ assert.equal(backend.version,'5.13.2');assert.equal(web.version,'5.13.2');
+ assert.match(read('../HySmart-Build-Web/public/sw.js'),/5\.13\.2-guided-onboarding/);
 });

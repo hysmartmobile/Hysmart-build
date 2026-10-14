@@ -49,6 +49,6 @@ test("v4.6.0 invitation preview distinguishes revoked or used invitations", asyn
 
 test("v4.6.0 server startup metadata is aligned", async () => {
   const source = await read("src/server.js");
-  assert.match(source, /HySmart Build API v5\.12\.0/);
+  assert.match(source, /HySmart Build API v5\.13\.2/);
   assert.doesNotMatch(source, /HySmart Build API v2\.2\.0/);
 });

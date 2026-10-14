@@ -1,7 +1,10 @@
 import crypto from "node:crypto";
 
-async function requestJson(url, options) {
-  const response = await fetch(url, options);
+async function requestJson(url, options = {}) {
+  // Bound outbound gateway calls so a stalled provider cannot pin API requests indefinitely.
+  const requestOptions = { ...options };
+  if (!requestOptions.signal) requestOptions.signal = AbortSignal.timeout(15_000);
+  const response = await fetch(url, requestOptions);
   const text = await response.text();
   let body;
   try { body = text ? JSON.parse(text) : {}; } catch { body = { message: text }; }

@@ -163,7 +163,7 @@ export class ProjectService {
       this.supabase.from("tasks").select("id,status,priority",{count:"exact",head:false}).eq("company_id",companyId).eq("project_id",projectId),
       this.supabase.from("issues").select("id,status,severity",{count:"exact",head:false}).eq("company_id",companyId).eq("project_id",projectId),
       this.supabase.from("milestones").select("id,status,progress,due_date").eq("company_id",companyId).eq("project_id",projectId),
-      this.supabase.from("daily_site_reports").select("id,status,report_date",{count:"exact",head:false}).eq("company_id",companyId).eq("project_id",projectId),
+      this.supabase.from("daily_site_reports").select("id,approval_status,report_date",{count:"exact",head:false}).eq("company_id",companyId).eq("project_id",projectId),
       this.supabase.from("expenses").select("amount,status").eq("company_id",companyId).eq("project_id",projectId),
       this.listBudgetLines({companyId,projectId}),this.listRisks({companyId,projectId}),this.listChangeOrders({companyId,projectId}),this.listChecklists({companyId,projectId}),this.listSites({companyId,projectId}),this.listTeam({companyId,projectId}),
       this.supabase.from("project_cost_ledger_v").select("entry_type,amount").eq("company_id",companyId).eq("project_id",projectId)
