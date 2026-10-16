@@ -3,6 +3,8 @@ import { z } from "zod";
 
 const isHttpsUrl = (value) => { try { return new URL(value).protocol === "https:"; } catch { return false; } };
 
+const configuredWebAppUrl = process.env.WEB_APP_URL || process.env.FRONTEND_URL || "http://localhost:5173";
+
 const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(3001),
@@ -25,7 +27,7 @@ const schema = z.object({
   CUSTOMER_CARE_LOCAL_MODEL_NAME: z.string().min(1).default('qwen2.5:7b'),
   HYSMART_PROJECT_AI_ENABLED: z.preprocess((value) => value === true || String(value || '').trim().toLowerCase() === 'true', z.boolean()).default(false),
   BILLING_CALLBACK_URL: z.string().url().default("http://localhost:5173/billing/callback"),
-  WEB_APP_URL: z.string().url().default("http://localhost:5173")
+  WEB_APP_URL: z.string().url().default(configuredWebAppUrl)
 }).superRefine((value, ctx) => {
   if (value.NODE_ENV === 'production') {
     if (value.CORS_ORIGIN.split(',').some((origin) => /localhost|127\.0\.0\.1/i.test(origin))) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['CORS_ORIGIN'], message: 'Production CORS_ORIGIN must not contain localhost or 127.0.0.1' });
@@ -68,5 +70,5 @@ export const env = {
   customerCareLocalModelName: parsed.data.CUSTOMER_CARE_LOCAL_MODEL_NAME,
   projectAiEnabled: parsed.data.HYSMART_PROJECT_AI_ENABLED,
   billingCallbackUrl: parsed.data.BILLING_CALLBACK_URL,
-  webAppUrl: parsed.data.WEB_APP_URL
+  webAppUrl: new URL(parsed.data.WEB_APP_URL).origin
 };
